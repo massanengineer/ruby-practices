@@ -6,11 +6,7 @@ params = ARGV.getopts("m:", "y:")
 #getoptsでオプションと引数を指定することができ、受け取ったものをHashとして受け取ることができる
 # :を付けると引数を取る
 
-if params["m"]
-  mon = params["m"].to_i   
-else
-  mon = day.mon             
-end
+mon = params['m'] ? params['m'].to_i : day.mon
 
 
 if params["y"]
@@ -40,9 +36,7 @@ wday = first_wday
 (1..last_day).each do |date|
   print date.to_s.rjust(2) + " "    #rjust 指定した長さの文字列にselfを右詰めした文字列を返す
   wday += 1
-  if wday % 7==0                      # 土曜日まで表示したら改行
-    print "\n"
-  end
+  puts if wday % 7 == 0                  # 土曜日まで表示したら改行
 end 
 if wday % 7 !=0
   print "\n"
