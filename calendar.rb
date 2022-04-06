@@ -7,15 +7,7 @@ params = ARGV.getopts("m:", "y:")
 # :を付けると引数を取る
 
 mon = params['m'] ? params['m'].to_i : day.mon
-
-
-if params["y"]
-  year = params["y"].to_i
-else
-  year = day.year
-end
-
-
+year = params['y'] ? params['y'].to_i : day.year
 
 top = Date.new(year,mon, 1).strftime("%-m月 %Y")    #Date.new(year,mon, 1)でその月の初日を指定
                                                     #strftime("%B, %Y")で月と西暦を表示
@@ -32,12 +24,9 @@ print "   " * first_wday  # *演算子をつかって文字列を繰り返す(�
                           # 1日目の日付を記載するための空白を設ける
 wday = first_wday
 
-
 (1..last_day).each do |date|
   print date.to_s.rjust(2) + " "    #rjust 指定した長さの文字列にselfを右詰めした文字列を返す
   wday += 1
   puts if wday % 7 == 0                  # 土曜日まで表示したら改行
 end 
-if wday % 7 !=0
-  print "\n"
-end
+puts if wday % 7 !=0
