@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'debug'
-
 score = ARGV[0]
 scores = score.split(',')
 shots = []
@@ -21,15 +19,11 @@ frames = []
 shots.each_slice(2) do |s|
   if frames.size == 10
     frames[9] << s
-  elsif s == [10, 0]
-    frames << [s.shift]
   else
     frames << s
   end
 end
-flattend_frame_nine = frames[9].flatten # frame[9]の3次元配列の修正
-frames << flattend_frame_nine # ...[10, 10, [10]], [10, 10, 10]]
-frames.delete_at(-2)          # ..., [10, 10, 10]]
+frames[9].flatten! # frame[9]の3次元配列の修正
 
 point = 0
 frames.each_with_index do |frame, i| # 例」frame[6,3] frames[[6,3][9,0]...]
