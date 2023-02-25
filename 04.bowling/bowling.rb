@@ -5,11 +5,9 @@ score = ARGV[0]
 scores = score.split(',')
 shots = []
 scores.each do |s|
-  if shots.size > 17 && s == 'X' # 10フレーム目
+  if s == 'X'
     shots << 10
-  elsif s == 'X'
-    shots << 10
-    shots << 0
+    shots << 0 if shots.size <= 17 #後置if
   else
     shots << s.to_i
   end
