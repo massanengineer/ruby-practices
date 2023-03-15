@@ -29,3 +29,4 @@ def display(rows)
   end
 end
 display(row_column.transpose)
+
