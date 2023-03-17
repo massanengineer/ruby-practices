@@ -1,14 +1,7 @@
 # frozen_string_literal: true
 
-require 'optparse'
-
-def current_files
-  option = ARGV.getopts('a')
-  option['a'] ? Dir.glob('*', File::FNM_DOTMATCH) : Dir.glob('*')
-end
-
 def row_column
-  files = current_files
+  files = Dir.glob('*')
   column_count = 3
   rest_of_row_count = files.size % column_count
   if rest_of_row_count >= 1
@@ -23,7 +16,7 @@ end
 def display(rows)
   rows.each do |row|
     row.each do |file_name|
-      print file_name.to_s.ljust(15)
+      print file_name.to_s.ljust(10)
     end
     puts "\n"
   end
