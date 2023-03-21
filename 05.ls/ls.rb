@@ -21,7 +21,7 @@ def row_column
 end
 
 def display(rows)
-  max_file_name = current_files.max_by { |word| word.size }
+  max_file_name = current_files.max_by(&:size)
   rows.each do |row|
     row.each do |file_name|
       print file_name.to_s.ljust(max_file_name.size + 5)
