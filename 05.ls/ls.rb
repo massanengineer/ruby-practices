@@ -1,7 +1,14 @@
 # frozen_string_literal: true
 
+require 'optparse'
+
+def current_files
+  option = ARGV.getopts('a')
+  option['a'] ? Dir.glob('*', File::FNM_DOTMATCH) : Dir.glob('*')
+end
+
 def row_column
-  files = Dir.glob('*')
+  files = current_files
   column_count = 3
   rest_of_row_count = files.size % column_count
   if rest_of_row_count >= 1
@@ -14,9 +21,11 @@ def row_column
 end
 
 def display(rows)
+  files2 = current_files
+  max_file_name = files2.max_by(&:size)
   rows.each do |row|
     row.each do |file_name|
-      print file_name.to_s.ljust(10)
+      print file_name.to_s.ljust(max_file_name.size + 5)
     end
     puts "\n"
   end
