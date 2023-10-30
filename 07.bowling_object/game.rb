@@ -11,10 +11,14 @@ class Game
         shots << 10
         shots << 0 if shots.size <= 17
       else
-        shots << s.to_i
+        shots << s
       end
     end
 
+    @frames = create_frames(shots)
+  end
+
+  def create_frames(shots)
     frames = []
     shots.each_slice(2) do |s|
       if frames.size == 10
@@ -25,7 +29,7 @@ class Game
     end
     frames[9].flatten!
 
-    @frames = frames.map { |frame| Frame.new(frame[0], frame[1], frame[2]) }
+    frames.map { |frame| Frame.new(frame[0], frame[1], frame[2]) }
   end
 
   def calculate_score
