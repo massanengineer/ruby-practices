@@ -38,19 +38,27 @@ class Game
       if i == 9
         point += frame.frame_score
       elsif frame.first_score == 10
-        if @frames[i + 1].first_score == 10 && i == 8
-          point += @frames[i + 1].first_score + @frames[i + 1].second_score + 10
-        elsif @frames[i + 1].first_score == 10
-          point += 10 + @frames[i + 2].first_score + 10
-        elsif @frames[i + 1].first_score != 10
-          point += @frames[i + 1].first_score + @frames[i + 1].second_score + 10
-        end
+        point += strike_score(i)
       elsif frame.frame_score == 10
-        point += @frames[i + 1].first_score + 10
+        point += spare_score(i)
       else
         point += frame.frame_score
       end
     end
     point
+  end
+
+  def strike_score(current_frame)
+    if @frames[current_frame + 1].first_score == 10 && current_frame == 8
+      @frames[current_frame + 1].first_score + @frames[current_frame + 1].second_score + 10
+    elsif @frames[current_frame + 1].first_score == 10
+      10 + @frames[current_frame + 2].first_score + 10
+    else
+      @frames[current_frame + 1].first_score + @frames[current_frame + 1].second_score + 10
+    end
+  end
+
+  def spare_score(current_frame)
+    @frames[current_frame + 1].first_score + 10
   end
 end
