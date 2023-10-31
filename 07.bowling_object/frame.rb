@@ -3,7 +3,7 @@
 require_relative 'shot'
 
 class Frame
-  attr_reader :first_score, :second_score, :third_score
+  attr_reader :first_score, :second_score
 
   def initialize(first_mark, second_mark, third_mark)
     @first_score = Shot.new(first_mark).shot
@@ -12,6 +12,6 @@ class Frame
   end
 
   def frame_score
-    (@first_score || 0) + (@second_score || 0) + (@third_score || 0)
+    @first_score + @second_score + @third_score
   end
 end
