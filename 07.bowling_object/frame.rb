@@ -11,7 +11,15 @@ class Frame
     @third_score = Shot.new(third_mark).shot
   end
 
-  def frame_score
+  def basis_point
     @first_score + @second_score + @third_score
+  end
+
+  def strike?
+    @first_score == Strike_point
+  end
+
+  def spare?
+    @first_score + @second_score == Spare_point
   end
 end
