@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'shot'
-
+require 'debug'
 class Frame
   attr_reader :first_score, :second_score
 
@@ -16,10 +16,24 @@ class Frame
   end
 
   def strike?
-    @first_score == Strike_point
+    @first_score == STRIKE_POINT
   end
 
   def spare?
-    @first_score + @second_score == Spare_point
+    @first_score + @second_score == SPARE_POINT
+  end
+
+  def strike_score(next_frame, after_next_frame, index)
+    if next_frame.strike? && index == 8
+      next_frame.first_score + next_frame.second_score + STRIKE_POINT
+    elsif next_frame.strike?
+      STRIKE_POINT + after_next_frame.first_score + STRIKE_POINT
+    else
+      next_frame.first_score + next_frame.second_score + STRIKE_POINT
+    end
+  end
+
+  def spare_score(next_frame)
+    next_frame.first_score + SPARE_POINT
   end
 end

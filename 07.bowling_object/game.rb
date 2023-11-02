@@ -2,8 +2,8 @@
 
 require_relative 'frame'
 
-Strike_point = 10
-Spare_point = 10
+STRIKE_POINT = 10
+SPARE_POINT = 10
 
 class Game
   def initialize(argument)
@@ -11,7 +11,7 @@ class Game
     shots = []
     scores.each do |s|
       if s == 'X'
-        shots << Strike_point
+        shots << STRIKE_POINT
         shots << 0 if shots.size <= 17
       else
         shots << s
@@ -20,19 +20,19 @@ class Game
 
     @frames = create_frames(shots)
   end
-  
+
   def calculate_score
     point = 0
     @frames.each_with_index do |frame, i|
-      if i == 9
-        point += frame.basis_point
-      elsif frame.strike?
-        point += strike_score(i)
-      elsif frame.spare?
-        point += spare_score(i)
-      else
-        point += frame.basis_point
-      end
+      point += if i == 9
+                 frame.basis_point
+               elsif frame.strike?
+                 frame.strike_score(@frames[i + 1], @frames[i + 2], i)
+               elsif frame.spare?
+                 frame.spare_score(@frames[i + 1])
+               else
+                 frame.basis_point
+               end
     end
     point
   end
@@ -42,7 +42,7 @@ class Game
   def create_frames(shots)
     frames = []
     shots.each_slice(2) do |s|
-      if frames.size == Strike_point
+      if frames.size == STRIKE_POINT
         frames[9] << s
       else
         frames << s
@@ -51,20 +51,5 @@ class Game
     frames[9].flatten!
 
     frames.map { |frame| Frame.new(frame[0], frame[1], frame[2]) }
-  end
-
-
-  def strike_score(current_frame)
-    if @frames[current_frame + 1].first_score == Strike_point && current_frame == 8
-      @frames[current_frame + 1].first_score + @frames[current_frame + 1].second_score + Strike_point
-    elsif @frames[current_frame + 1].first_score == Strike_point
-      Strike_point + @frames[current_frame + 2].first_score + Strike_point
-    else
-      @frames[current_frame + 1].first_score + @frames[current_frame + 1].second_score + Strike_point
-    end
-  end
-
-  def spare_score(current_frame)
-    @frames[current_frame + 1].first_score + Spare_point
   end
 end
