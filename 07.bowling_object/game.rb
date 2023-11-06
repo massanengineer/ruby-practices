@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'frame'
-require 'debug'
+
 STRIKE_SCORE = 10
 SPARE_SCORE = 10
 
