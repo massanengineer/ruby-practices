@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require_relative 'frame'
-
-STRIKE_POINT = 10
-SPARE_POINT = 10
+require 'debug'
+STRIKE_SCORE = 10
+SPARE_SCORE = 10
 
 class Game
   def initialize(argument)
@@ -11,7 +11,7 @@ class Game
     shots = []
     scores.each do |s|
       if s == 'X'
-        shots << STRIKE_POINT
+        shots << STRIKE_SCORE
         shots << 0 if shots.size <= 17
       else
         shots << s
@@ -24,15 +24,7 @@ class Game
   def calculate_score
     point = 0
     @frames.each_with_index do |frame, i|
-      point += if i == 9
-                 frame.basis_point
-               elsif frame.strike?
-                 frame.strike_score(@frames[i + 1], @frames[i + 2], i)
-               elsif frame.spare?
-                 frame.spare_score(@frames[i + 1])
-               else
-                 frame.basis_point
-               end
+      point += frame.basis_score + frame.bonus_score(@frames[i + 1], @frames[i + 2], i)
     end
     point
   end
@@ -42,7 +34,7 @@ class Game
   def create_frames(shots)
     frames = []
     shots.each_slice(2) do |s|
-      if frames.size == STRIKE_POINT
+      if frames.size == STRIKE_SCORE
         frames[9] << s
       else
         frames << s
