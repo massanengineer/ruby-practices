@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'frame'
-require 'debug'
+
 STRIKE_SCORE = 10
 SPARE_SCORE = 10
 
@@ -41,6 +41,6 @@ class Game
       end
     end
     frames[9].flatten!
-    frames.map.with_index { |frame, index| Frame.new(index, frame[0], frame[1], frame[2])  }
+    frames.map.with_index { |frame, index| Frame.new(index, frame[0], frame[1], frame[2]) }
   end
 end
