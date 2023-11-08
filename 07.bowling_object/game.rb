@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'frame'
-
+require 'debug'
 STRIKE_SCORE = 10
 SPARE_SCORE = 10
 
@@ -24,7 +24,7 @@ class Game
   def calculate_score
     point = 0
     @frames.each_with_index do |frame, i|
-      point += frame.basis_score + frame.bonus_score(@frames[i + 1], @frames[i + 2], i)
+      point += frame.basis_score + frame.bonus_score(@frames[i + 1], @frames[i + 2])
     end
     point
   end
@@ -41,7 +41,6 @@ class Game
       end
     end
     frames[9].flatten!
-
-    frames.map { |frame| Frame.new(frame[0], frame[1], frame[2]) }
+    frames.map.with_index { |frame, index| Frame.new(index, frame[0], frame[1], frame[2])  }
   end
 end

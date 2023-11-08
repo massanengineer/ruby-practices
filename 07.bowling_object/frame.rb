@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 require_relative 'shot'
-
+require 'debug'
 class Frame
   attr_reader :first_score, :second_score
 
-  def initialize(first_mark, second_mark, third_mark)
+  def initialize(index, first_mark, second_mark, third_mark)
+    # インデックスの位置とnilの行方、引数を減らす
+    @index = index
     @first_score = Shot.new(first_mark).shot
     @second_score = Shot.new(second_mark).shot
     @third_score = Shot.new(third_mark).shot
@@ -15,15 +17,15 @@ class Frame
     @first_score + @second_score
   end
 
-  def bonus_score(next_frame, after_next_frame, index)
-    if index == 9
+  def bonus_score(next_frame, after_next_frame)
+    if @index == 9
       if strike? || spare?
         @third_score
       else
         0
       end
     elsif strike?
-      strike_score(next_frame, after_next_frame, index)
+      strike_score(next_frame, after_next_frame)
     elsif spare?
       spare_score(next_frame)
     else
@@ -36,11 +38,13 @@ class Frame
   end
 
   def spare?
-    @first_score + @second_score == SPARE_SCORE && !strike?
+    return false if strike?
+
+    @first_score + @second_score == SPARE_SCORE
   end
 
-  def strike_score(next_frame, after_next_frame, index)
-    if next_frame.strike? && index == 8
+  def strike_score(next_frame, after_next_frame)
+    if next_frame.strike? && @index == 8
       next_frame.first_score + next_frame.second_score
     elsif next_frame.strike?
       STRIKE_SCORE + after_next_frame.first_score
