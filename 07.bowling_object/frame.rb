@@ -13,7 +13,7 @@ class Frame
   end
 
   def basis_score
-    if @index == 9 && strike?
+    if final_frame? && strike?
       STRIKE_SCORE
     else
       @first_score + @second_score
@@ -21,7 +21,7 @@ class Frame
   end
 
   def bonus_score(next_frame, after_next_frame)
-    if @index == 9
+    if final_frame?
       if strike?
         @second_score + @third_score
       elsif spare?
@@ -42,13 +42,17 @@ class Frame
     @first_score == STRIKE_SCORE
   end
 
+  private
+
+  def final_frame?
+    @index == 9
+  end
+
   def spare?
     return false if strike?
 
     @first_score + @second_score == SPARE_SCORE
   end
-
-  private
 
   def not_final_frame_strike_bonus(next_frame, after_next_frame)
     if next_frame.strike? && @index == 8
